@@ -1,3 +1,9 @@
+import dns from "dns";
+
+if (process.env.NODE_ENV !== "production") {
+  dns.setServers(["1.1.1.1", "8.8.8.8"]);
+}
+
 import { env } from "./config/env.js";
 import { connectDB } from "./config/db.js";
 import app from "./app.js";
@@ -10,7 +16,7 @@ const startServer = async (): Promise<void> => {
     // Start the Express server
     const server = app.listen(env.PORT, () => {
       console.log(
-        `🚀 Server is running on port ${env.PORT} in ${env.NODE_ENV} mode`
+        `🚀 Server is running on port ${env.PORT} in ${env.NODE_ENV} mode`,
       );
     });
 

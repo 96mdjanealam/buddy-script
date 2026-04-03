@@ -9,18 +9,15 @@ export const authController = {
    */
   register: asyncHandler(async (req: Request, res: Response) => {
     const { firstName, lastName, email, password } = req.body;
-    const { user, token, cookieOptions } = await authService.register(
+    const { user } = await authService.register(
       firstName,
       lastName,
       email,
       password,
     );
 
-    res.cookie("accessToken", token, cookieOptions);
-
     return ApiResponse.created(res, "User registered successfully", {
       user,
-      token,
     });
   }),
 

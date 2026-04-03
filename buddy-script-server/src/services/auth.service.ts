@@ -21,7 +21,7 @@ const COOKIE_OPTIONS = {
 
 export const authService = {
   /**
-   * Register a new user and return token + user data.
+   * Register a new user and return user data.
    */
   async register(firstName: string, lastName: string, email: string, password: string) {
     const existingUser = await User.findOne({ email });
@@ -30,7 +30,6 @@ export const authService = {
     }
 
     const user = await User.create({ firstName, lastName, email, password });
-    const token = generateToken(user);
 
     const userResponse = {
       _id: user._id,
@@ -41,7 +40,7 @@ export const authService = {
       createdAt: user.createdAt,
     };
 
-    return { user: userResponse, token, cookieOptions: COOKIE_OPTIONS };
+    return { user: userResponse };
   },
 
   /**

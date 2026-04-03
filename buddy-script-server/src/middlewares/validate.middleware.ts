@@ -34,7 +34,13 @@ export const validate = (schemas: ValidationSchemas) => {
           )
         );
       } else {
-        (req as any).params = result.data;
+        // Overwrite params with parsed/coerced values using defineProperty to avoid getter-only errors
+        Object.defineProperty(req, "params", {
+          value: result.data,
+          enumerable: true,
+          writable: true,
+          configurable: true,
+        });
       }
     }
 
@@ -48,7 +54,13 @@ export const validate = (schemas: ValidationSchemas) => {
         );
       } else {
         // Overwrite query with parsed/coerced values
-        (req as any).query = result.data;
+        // Overwrite query with parsed/coerced values using defineProperty to avoid getter-only errors
+        Object.defineProperty(req, "query", {
+          value: result.data,
+          enumerable: true,
+          writable: true,
+          configurable: true,
+        });
       }
     }
 

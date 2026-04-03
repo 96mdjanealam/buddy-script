@@ -3,53 +3,24 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-
-  /* Design Tokens from Example */
-  --color: #2D3748;
-  --color1: #1A202C;
-  --color2: #312000;
-  --color3: #C4C4C4;
-  --color4: #4A5568;
-  --color5: #1890FF;
-  --color6: #212121;
-  --color7: #666666;
-  --color8: #0ACF83;
-  --color9: #e8f4ff;
-  --bg1: #F0F2F5;
-  --bg2: #FFFFFF;
-  --bg3: #F5F5F5;
-  --bg4: #DFDFDF;
-  --bg5: #112032;
-  --bg6: #232E42;
-  --b-shadow1: 7.5px 20px 7.5px 20px rgba(108, 126, 147, 0.15);
-  --b-shadow2: 7.43px 49.03px 7.5px 49.03px rgba(108, 126, 147, 0.1);
-  --b-shadow3: 7px 42px 7px 42px rgba(108, 126, 147, 0.15);
-  --b-shadow4: 0px 2px 0px 2px rgba(108, 126, 147, 0.15);
-  --b-shadow5: 0px 3px 0px 3px rgba(108, 126, 147, 0.15);
-  --b-shadow6: 0px 4px 0px 4px rgba(108, 126, 147, 0.15);
-  --bcolor1: #F0F2F5;
-  --bcolor2: #F5F5F5;
-  --bcolor3: #E8E8E8;
 }
 
-@theme {
+@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  
-  /* Adding design colors to Tailwind theme */
-  --color-primary: var(--color5);
-  --color-text-main: var(--color);
-  --color-text-dark: var(--color1);
-  --color-bg-base: var(--bg1);
-  --color-bg-card: var(--bg2);
-  --color-input-border: #E8E8E8;
-  --color-color2: var(--color2);
-  --font-poppins: var(--font-poppins);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
 }
 
 body {
   background: var(--background);
-  color: var(--color-text-main);
-  font-family: var(--font-poppins), sans-serif;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
 }
-

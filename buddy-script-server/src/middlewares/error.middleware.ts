@@ -47,6 +47,13 @@ export const errorHandler = (
       errors,
       stack: err.stack,
     });
+    // Temporary file logging to help diagnose the Feed 500 error
+    try {
+      require("fs").appendFileSync(
+        "backend-error.log", 
+        new Date().toISOString() + " - " + message + "\n" + (err.stack || "") + "\n\n"
+      );
+    } catch(e) {}
   }
 
   res.status(statusCode).json({

@@ -19,7 +19,7 @@ export const feedService = {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .populate("author", "name email profileImage")
+        .populate("author", "firstName lastName email profileImage")
         .lean(),
       Post.countDocuments(filter),
     ]);
