@@ -26,8 +26,8 @@ export const userController = {
     const imageBuffer = req.file?.buffer;
     const user = await userService.updateProfile(
       req.user.userId,
-      { name: req.body.name },
-      imageBuffer
+      { firstName: req.body.firstName, lastName: req.body.lastName },
+      imageBuffer,
     );
 
     return ApiResponse.success(res, "Profile updated successfully", user);
@@ -43,7 +43,7 @@ export const userController = {
     const result = await userService.changePassword(
       req.user.userId,
       currentPassword,
-      newPassword
+      newPassword,
     );
 
     return ApiResponse.success(res, result.message, null);
@@ -57,17 +57,33 @@ export const userController = {
     const { userId } = req.params;
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 20;
+    const loggedInUserId = req.user?.userId;
 
     const result = await userService.getPublicProfile(
       userId as string,
       page,
-      limit
+      limit,
+      loggedInUserId,
     );
 
     return ApiResponse.success(
       res,
       "Public profile retrieved successfully",
-      result
+      result,
+    );
+  }),
+
+  /**
+   * GET /api/users/latest
+   * List the 10 most recently registered users.
+   */
+  getLatestUsers: asyncHandler(async (_req: Request, res: Response) => {
+    const users = await userService.getLatestUsers();
+
+    return ApiResponse.success(
+      res,
+      "Latest registered users retrieved successfully",
+      users,
     );
   }),
 };

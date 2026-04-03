@@ -8,10 +8,12 @@ export const authController = {
    * POST /api/auth/register
    */
   register: asyncHandler(async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
     const { user, token, cookieOptions } = await authService.register(
+      firstName,
+      lastName,
       email,
-      password
+      password,
     );
 
     res.cookie("accessToken", token, cookieOptions);

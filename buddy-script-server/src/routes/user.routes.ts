@@ -31,6 +31,9 @@ router.patch(
   userController.changePassword
 );
 
+// List latest 10 users
+router.get("/latest", userController.getLatestUsers);
+
 // Public profile
 router.get(
   "/:userId",

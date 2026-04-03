@@ -23,19 +23,20 @@ export const authService = {
   /**
    * Register a new user and return token + user data.
    */
-  async register(email: string, password: string) {
+  async register(firstName: string, lastName: string, email: string, password: string) {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw ApiError.conflict("User with this email already exists");
     }
 
-    const user = await User.create({ email, password });
+    const user = await User.create({ firstName, lastName, email, password });
     const token = generateToken(user);
 
     const userResponse = {
       _id: user._id,
       email: user.email,
-      name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       profileImage: user.profileImage,
       createdAt: user.createdAt,
     };
@@ -63,7 +64,8 @@ export const authService = {
     const userResponse = {
       _id: user._id,
       email: user.email,
-      name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       profileImage: user.profileImage,
       createdAt: user.createdAt,
     };

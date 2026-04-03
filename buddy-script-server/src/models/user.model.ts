@@ -18,10 +18,15 @@ const userSchema = new Schema<IUserDocument>(
       minlength: [6, "Password must be at least 6 characters"],
       select: false,
     },
-    name: {
+    firstName: {
       type: String,
       trim: true,
-      default: "",
+      required: [true, "First name is required"],
+    },
+    lastName: {
+      type: String,
+      trim: true,
+      required: [true, "Last name is required"],
     },
     profileImage: {
       url: { type: String, default: "" },

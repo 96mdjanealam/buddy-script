@@ -23,17 +23,20 @@ export const userService = {
    */
   async updateProfile(
     userId: string,
-    data: { name?: string },
-    imageBuffer?: Buffer
+    data: { firstName?: string; lastName?: string },
+    imageBuffer?: Buffer,
   ) {
     const user = await User.findById(userId);
     if (!user) {
       throw ApiError.notFound("User not found");
     }
 
-    // Update name if provided
-    if (data.name !== undefined) {
-      user.name = data.name;
+    // Update firstName and lastName if provided
+    if (data.firstName !== undefined) {
+      user.firstName = data.firstName;
+    }
+    if (data.lastName !== undefined) {
+      user.lastName = data.lastName;
     }
 
     // Handle image upload
@@ -45,7 +48,7 @@ export const userService = {
 
       const uploaded = await uploadImageToCloudinary(
         imageBuffer,
-        "buddy-script/profiles"
+        "buddy-script/profiles",
       );
       user.profileImage = {
         url: uploaded.url,
@@ -63,7 +66,7 @@ export const userService = {
   async changePassword(
     userId: string,
     currentPassword: string,
-    newPassword: string
+    newPassword: string,
   ) {
     const user = await User.findById(userId).select("+password");
     if (!user) {
@@ -83,9 +86,14 @@ export const userService = {
   /**
    * Get another user's public profile with their public posts (paginated).
    */
-  async getPublicProfile(targetUserId: string, page: number, limit: number) {
+  async getPublicProfile(
+    targetUserId: string,
+    page: number,
+    limit: number,
+    loggedInUserId?: string,
+  ) {
     const user = await User.findById(targetUserId).select(
-      "name email profileImage createdAt"
+      "firstName lastName email profileImage createdAt",
     );
     if (!user) {
       throw ApiError.notFound("User not found");
@@ -93,14 +101,20 @@ export const userService = {
 
     const skip = (page - 1) * limit;
 
+    // If the requesting user is the owner, show all posts; otherwise, show only public posts
+    const postFilter = {
+      author: targetUserId,
+      ...(loggedInUserId !== targetUserId && { visibility: "public" }),
+    };
+
     const [posts, totalPosts] = await Promise.all([
-      Post.find({ author: targetUserId, visibility: "public" })
+      Post.find(postFilter)
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .populate("author", "name email profileImage")
+        .populate("author", "firstName lastName email profileImage")
         .lean(),
-      Post.countDocuments({ author: targetUserId, visibility: "public" }),
+      Post.countDocuments(postFilter),
     ]);
 
     return {
@@ -114,5 +128,16 @@ export const userService = {
         hasNextPage: page * limit < totalPosts,
       },
     };
+  },
+
+  /**
+   * Get the latest 10 registered users with basic info.
+   */
+  async getLatestUsers() {
+    return await User.find()
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .select("firstName lastName email profileImage createdAt")
+      .lean();
   },
 };

@@ -8,7 +8,8 @@ export interface ICloudinaryImage {
 export interface IUser {
   email: string;
   password: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   profileImage: ICloudinaryImage;
   createdAt: Date;
   updatedAt: Date;
@@ -21,7 +22,8 @@ export interface IUserDocument extends IUser, Document {
 
 export interface IUserPublicProfile {
   _id: Types.ObjectId;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   profileImage: ICloudinaryImage;
   createdAt: Date;
