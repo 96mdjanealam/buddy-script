@@ -12,8 +12,18 @@ export interface RegisterData {
   password?: string;
 }
 
+export interface LoginData {
+  email: string;
+  password?: string;
+}
+
 export interface ApiResponse<T = any> {
   success: boolean;
   message: string;
   data: T;
+}
+
+export interface LoginResponse {
+  user: User;
+  token: string;
 }

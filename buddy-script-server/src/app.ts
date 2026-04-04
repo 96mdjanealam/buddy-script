@@ -13,7 +13,7 @@ app.use(
   cors({
     origin: true, // Allow all origins in dev; restrict in production
     credentials: true, // Allow cookies
-  })
+  }),
 );
 
 // Body parsing
@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 
 // Health check
-app.get("/api/health", (_req, res) => {
+app.get("/", (_req, res) => {
   res.status(200).json({
     success: true,
     message: "BuddyScript API is running",
