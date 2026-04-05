@@ -9,6 +9,7 @@ import { useAuth } from "@/context/auth-context";
 import { postService } from "@/services/post.service";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 const postSchema = z.object({
   text: z.string().max(5000, "Post cannot exceed 5000 characters").optional(),
@@ -74,6 +75,7 @@ const PostUpload: React.FC<PostUploadProps> = ({ onPostCreated }) => {
       await postService.createPost(formData);
       reset();
       removeImage();
+      toast.success("Post created successfully!");
       if (onPostCreated) {
         onPostCreated();
       }
@@ -95,6 +97,7 @@ const PostUpload: React.FC<PostUploadProps> = ({ onPostCreated }) => {
                 src={user.profileImage.url}
                 alt={`${user.firstName} ${user.lastName}`}
                 fill
+                sizes="40px"
                 className="object-cover"
               />
             ) : (

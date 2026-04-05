@@ -119,3 +119,24 @@ export interface PublicProfileResponse {
   posts: Post[];
   pagination: PaginationInfo;
 }
+
+export interface NewFolksUser {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  profileImage?: { url: string; publicId: string };
+  createdAt: string;
+}
+
+export interface NewFolksPagination {
+  page: number;
+  limit: number;
+  totalUsers: number;
+  totalPages: number;
+  hasNextPage: boolean;
+}
+
+export interface NewFolksResponse {
+  users: NewFolksUser[];
+  pagination: NewFolksPagination;
+}

@@ -1,5 +1,11 @@
 import apiClient from "@/lib/api-client";
-import { User, ApiResponse, UpdateProfileData, ChangePasswordData, PaginationParams, PublicProfileResponse } from "@/types/api";
+import { User, ApiResponse, UpdateProfileData, ChangePasswordData, PaginationParams, PublicProfileResponse, NewFolksResponse } from "@/types/api";
+
+export interface NewFolksParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+}
 
 export const userService = {
   /**
@@ -36,6 +42,14 @@ export const userService = {
     params?: PaginationParams
   ): Promise<ApiResponse<PublicProfileResponse>> {
     const response = await apiClient.get(`/users/${userId}`, { params });
+    return response.data;
+  },
+
+  /**
+   * Get latest users with pagination and optional name search.
+   */
+  async getLatestUsers(params?: NewFolksParams): Promise<ApiResponse<NewFolksResponse>> {
+    const response = await apiClient.get("/users/latest", { params });
     return response.data;
   },
 };

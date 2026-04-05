@@ -16,8 +16,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "BuddyScript",
-  description: "Next-generation script management",
+  description: "BuddyScript is a modern social media platform.",
 };
+
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({
   children,
@@ -31,6 +33,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <AuthProvider>{children}</AuthProvider>
+        <Toaster position="top-center" />
       </body>
     </html>
   );

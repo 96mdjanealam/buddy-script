@@ -6,7 +6,7 @@ import {
   updateProfileSchema,
   changePasswordSchema,
 } from "../validators/user.validator.js";
-import { objectIdSchema, paginationSchema } from "../validators/common.validator.js";
+import { objectIdSchema, paginationSchema, newFolksQuerySchema } from "../validators/common.validator.js";
 import { z } from "zod";
 
 const router = Router();
@@ -31,8 +31,8 @@ router.patch(
   userController.changePassword
 );
 
-// List latest 10 users
-router.get("/latest", userController.getLatestUsers);
+// List latest users (paginated, searchable by name)
+router.get("/latest", validate({ query: newFolksQuerySchema }), userController.getLatestUsers);
 
 // Public profile
 router.get(

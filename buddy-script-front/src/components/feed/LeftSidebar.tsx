@@ -1,5 +1,5 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 import {
   PlayCircle,
   BarChart2,
@@ -9,23 +9,29 @@ import {
   Gamepad2,
   Settings,
   Save,
-} from 'lucide-react';
+} from "lucide-react";
 
 const LeftSidebar = () => {
   const menuItems = [
-    { icon: PlayCircle, label: 'Learning', href: '/learning', isNew: true },
-    { icon: BarChart2, label: 'Insights', href: '/insights' },
-    { icon: UserPlus, label: 'Find friends', href: '/find-friends' },
-    { icon: Bookmark, label: 'Bookmarks', href: '/bookmarks' },
-    { icon: Users, label: 'Group', href: '/group' },
-    { icon: Gamepad2, label: 'Gaming', href: '/gaming', isNew: true },
-    { icon: Settings, label: 'Settings', href: '/settings' },
-    { icon: Save, label: 'Save post', href: '/saved-posts' },
+    { icon: PlayCircle, label: "Learning", href: "/learning", isNew: true },
+    { icon: BarChart2, label: "Insights", href: "/insights" },
+    { icon: UserPlus, label: "Find friends", href: "/find-friends" },
+    { icon: Bookmark, label: "Bookmarks", href: "/bookmarks" },
+    { icon: Users, label: "Group", href: "/group" },
+    { icon: Gamepad2, label: "Gaming", href: "/gaming", isNew: true },
+    { icon: Settings, label: "Settings", href: "/settings" },
+    { icon: Save, label: "Save post", href: "/saved-posts" },
   ];
 
   return (
     <div className="w-full bg-white rounded-md shadow-sm border border-slate-100 p-5">
-      <h2 className="text-lg font-semibold text-slate-900 mb-5 pl-1 tracking-tight">Explore</h2>
+      <h2 className="text-lg font-semibold text-slate-900 mb-5 pl-1 tracking-tight">
+        Explore{" "}
+        <span className="italic text-xs text-slate-400 font-normal ml-2">
+          Coming soon
+        </span>
+      </h2>
+
       <nav className="flex flex-col space-y-1">
         {menuItems.map((item, index) => {
           const Icon = item.icon;
@@ -42,7 +48,7 @@ const LeftSidebar = () => {
                 </span>
               </div>
               {item.isNew && (
-                <span className="bg-[#1cdb94] text-white text-[11px] font-bold px-2.5 py-[2px] rounded-full tracking-wide">
+                <span className="bg-[#1cdb94] text-white text-[11px] font-bold px-2.5 py-[2px] rounded-md tracking-wide">
                   New
                 </span>
               )}

@@ -24,6 +24,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
             src={imageSrc}
             alt={imageAlt}
             fill
+            sizes="(max-width: 768px) 100vw, 60vw"
             className="object-contain"
             priority
           />
@@ -39,7 +40,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
                 alt="BuddyScript"
                 width={160}
                 height={35}
-                className="h-auto w-auto"
+                style={{ width: "auto", height: "auto" }}
               />
             </div>
             {children}

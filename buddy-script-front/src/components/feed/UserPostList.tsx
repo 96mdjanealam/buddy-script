@@ -9,9 +9,10 @@ import { RefreshCw } from "lucide-react";
 
 interface UserPostListProps {
   userId: string;
+  isOwnProfile?: boolean;
 }
 
-const UserPostList: React.FC<UserPostListProps> = ({ userId }) => {
+const UserPostList: React.FC<UserPostListProps> = ({ userId, isOwnProfile = false }) => {
   const [profileUser, setProfileUser] = useState<User | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -99,7 +100,7 @@ const UserPostList: React.FC<UserPostListProps> = ({ userId }) => {
       {posts.length > 0 ? (
         <>
           {posts.map((post) => (
-            <PostCard key={post._id} post={post} onPostDeleted={handlePostDeleted} hideOnMakePrivate={false} />
+            <PostCard key={post._id} post={post} onPostDeleted={handlePostDeleted} hideOnMakePrivate={!isOwnProfile} />
           ))}
           
           {hasMore && (
@@ -119,7 +120,9 @@ const UserPostList: React.FC<UserPostListProps> = ({ userId }) => {
       ) : (
         <div className="bg-white rounded-md shadow-sm border border-gray-100 p-12 text-center space-y-3">
            <h3 className="text-lg font-bold text-gray-800">No posts yet</h3>
-           <p className="text-gray-500">You haven't shared any posts.</p>
+           <p className="text-gray-500">
+             {isOwnProfile ? "You haven't shared any posts." : "This user hasn't shared any public posts."}
+           </p>
         </div>
       )}
     </div>

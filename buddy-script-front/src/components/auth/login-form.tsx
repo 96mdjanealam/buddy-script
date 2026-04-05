@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { FormField } from "@/components/ui/form-field";
 import { useAuth } from "@/context/auth-context";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -19,6 +20,7 @@ type LoginValues = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
 
@@ -35,8 +37,18 @@ const LoginForm = () => {
     },
   });
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const emailParam = urlParams.get("email");
+      if (emailParam) {
+        setValue("email", emailParam, { shouldValidate: true });
+      }
+    }
+  }, [setValue]);
+
   const autofillCredentials = () => {
-    setValue("email", "user1@gmail.com", { shouldValidate: true });
+    setValue("email", "user12@gmail.com", { shouldValidate: true });
     setValue("password", "123456", { shouldValidate: true });
   };
 
@@ -76,12 +88,21 @@ const LoginForm = () => {
         </FormField>
 
         <FormField label="Password" error={errors.password?.message}>
-          <Input
-            {...register("password")}
-            placeholder="Password"
-            type="password"
-            className="h-12"
-          />
+          <div className="relative">
+            <Input
+              {...register("password")}
+              placeholder="Password"
+              type={showPassword ? "text" : "password"}
+              className="h-12 pr-12"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
         </FormField>
 
         <div className="flex items-center justify-end">

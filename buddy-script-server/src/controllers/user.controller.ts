@@ -75,15 +75,19 @@ export const userController = {
 
   /**
    * GET /api/users/latest
-   * List the 10 most recently registered users.
+   * Paginated list of most recently registered users, searchable by name.
    */
-  getLatestUsers: asyncHandler(async (_req: Request, res: Response) => {
-    const users = await userService.getLatestUsers();
+  getLatestUsers: asyncHandler(async (req: Request, res: Response) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 5;
+    const search = (req.query.search as string) || undefined;
+
+    const result = await userService.getLatestUsers(page, limit, search);
 
     return ApiResponse.success(
       res,
       "Latest registered users retrieved successfully",
-      users,
+      result,
     );
   }),
 };

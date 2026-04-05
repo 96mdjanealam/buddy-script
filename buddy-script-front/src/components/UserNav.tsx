@@ -27,6 +27,7 @@ const UserNav = () => {
             src={user.profileImage.url}
             alt={`${user.firstName} ${user.lastName}`}
             fill
+            sizes="36px"
             className="object-cover"
           />
         ) : (

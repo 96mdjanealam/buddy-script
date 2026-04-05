@@ -29,6 +29,7 @@ All API endpoints are prefixed with `/api`.
 | GET | `/users/me` | ✅ | Get own profile info |
 | PATCH | `/users/me` | ✅ | Update profile (name/image) |
 | PATCH | `/users/me/password` | ✅ | Change password |
+| GET | `/users/latest` | ✅ | List latest users (paginated, searchable) |
 | GET | `/users/:userId` | ✅ | Get public profile of another user |
 
 ### Update Profile
@@ -50,6 +51,12 @@ All API endpoints are prefixed with `/api`.
 **Request Query:**
 - `page` (number, default: 1)
 - `limit` (number, default: 20)
+
+### List Latest Users Query
+**Request Query:**
+- `page` (number, default: 1)
+- `limit` (number, default: 20)
+- `search` (string, optional) - Search by name
 
 ---
 
@@ -95,11 +102,12 @@ All API endpoints are prefixed with `/api`.
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| POST | `/posts/:postId/like` | ✅ | Toggle like/unlike |
+| POST | `/posts/:postId/like` | ✅ | Toggle like/unlike on post |
 | POST | `/posts/:postId/comments` | ✅ | Add a comment or reply |
 | GET | `/posts/:postId/comments` | ✅ | List top-level comments |
 | GET | `/comments/:commentId/replies`| ✅ | List replies to a comment |
 | DELETE | `/comments/:commentId` | ✅ | Delete own comment |
+| POST | `/comments/:commentId/like` | ✅ | Toggle like on comment |
 
 ### Add Comment / Reply
 **Request Body:**

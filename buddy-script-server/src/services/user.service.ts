@@ -141,13 +141,41 @@ export const userService = {
   },
 
   /**
-   * Get the latest 10 registered users with basic info.
+   * Get the latest registered users with pagination and optional name search.
    */
-  async getLatestUsers() {
-    return await User.find()
-      .sort({ createdAt: -1 })
-      .limit(10)
-      .select("firstName lastName email profileImage createdAt")
-      .lean();
+  async getLatestUsers(page: number, limit: number, search?: string) {
+    const skip = (page - 1) * limit;
+
+    const filter: Record<string, any> = {};
+    if (search && search.trim()) {
+      const regex = new RegExp(search.trim(), "i");
+      filter.$or = [
+        { firstName: { $regex: regex } },
+        { lastName: { $regex: regex } },
+      ];
+    }
+
+    const [users, totalUsers] = await Promise.all([
+      User.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .select("firstName lastName profileImage createdAt")
+        .lean(),
+      User.countDocuments(filter),
+    ]);
+
+    const totalPages = Math.ceil(totalUsers / limit);
+
+    return {
+      users,
+      pagination: {
+        page,
+        limit,
+        totalUsers,
+        totalPages,
+        hasNextPage: page < totalPages,
+      },
+    };
   },
 };

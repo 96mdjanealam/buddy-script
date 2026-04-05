@@ -185,6 +185,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
               src={comment.author.profileImage.url}
               alt={`${comment.author.firstName} ${comment.author.lastName}`}
               fill
+              sizes="32px"
               className="object-cover"
             />
           ) : (
@@ -236,6 +237,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                               src={liker.profileImage.url}
                               alt={liker.firstName}
                               fill
+                              sizes="16px"
                               className="object-cover"
                             />
                           ) : (
@@ -335,6 +337,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                     src={user.profileImage.url}
                     alt={`${user?.firstName} ${user?.lastName}`}
                     fill
+                    sizes="28px"
                     className="object-cover"
                   />
                 ) : (

@@ -88,6 +88,7 @@ const ProfileForm = () => {
                 src={previewUrl}
                 alt="Profile Preview"
                 fill
+                sizes="112px"
                 className="object-cover"
               />
             ) : (

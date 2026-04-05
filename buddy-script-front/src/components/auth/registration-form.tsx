@@ -10,6 +10,8 @@ import { FormField } from "@/components/ui/form-field";
 import { Checkbox } from "@/components/ui/checkbox";
 import { authService } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
+import toast from "react-hot-toast";
 
 const registrationSchema = z
   .object({
@@ -37,6 +39,7 @@ type RegistrationValues = z.infer<typeof registrationSchema>;
 
 const RegistrationForm = () => {
   const [error, setError] = useState<string | null>(null);
+  const [showPasswords, setShowPasswords] = useState({ password: false, confirm: false });
   const router = useRouter();
 
   const {
@@ -64,8 +67,8 @@ const RegistrationForm = () => {
         password: values.password,
       });
       // Redirect or success state
-      alert("Registration successful! Redirecting to login...");
-      router.push("/login");
+      toast.success("Registration successful!");
+      router.push(`/login?email=${encodeURIComponent(values.email)}`);
     } catch (err: any) {
       setError(err.message || "Something went wrong. Please try again.");
     }
@@ -113,22 +116,42 @@ const RegistrationForm = () => {
         </FormField>
 
         <FormField label="Password" error={errors.password?.message}>
-          <Input
-            {...register("password")}
-            placeholder="Password"
-            type="password"
-          />
+          <div className="relative">
+            <Input
+              {...register("password")}
+              placeholder="Password"
+              type={showPasswords.password ? "text" : "password"}
+              className="pr-12"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPasswords(prev => ({ ...prev, password: !prev.password }))}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              {showPasswords.password ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
         </FormField>
 
         <FormField
           label="Repeat Password"
           error={errors.confirmPassword?.message}
         >
-          <Input
-            {...register("confirmPassword")}
-            placeholder="Confirm Password"
-            type="password"
-          />
+          <div className="relative">
+            <Input
+              {...register("confirmPassword")}
+              placeholder="Confirm Password"
+              type={showPasswords.confirm ? "text" : "password"}
+              className="pr-12"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              {showPasswords.confirm ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
         </FormField>
 
         <div className="pt-2">
