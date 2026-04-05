@@ -11,8 +11,8 @@ const app = express();
 app.use(helmet());
 app.use(
   cors({
-    origin: true, // Allow all origins in dev; restrict in production
-    credentials: true, // Allow cookies
+    origin: ["http://localhost:3000", "https://buddy-script-front.vercel.app"],
+    credentials: true,
   }),
 );
 
