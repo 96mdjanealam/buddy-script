@@ -30,7 +30,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
         </div>
 
         {/* Right Side: Form Content */}
-        <div className="w-full md:w-[35%] flex flex-col items-center justify-center p-8 md:p-10 bg-white rounded-sm shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50 relative">
+        <div className="w-full md:w-[35%] flex flex-col items-center justify-center p-8 md:p-10 bg-white rounded-md shadow-sm border border-gray-50 relative">
           <div className="w-full max-w-sm flex flex-col items-center">
             {/* Logo */}
             <div className="mb-6">

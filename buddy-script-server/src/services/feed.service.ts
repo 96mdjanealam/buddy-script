@@ -1,17 +1,17 @@
 import { Post } from "../models/post.model.js";
+import { likeService } from "./like.service.js";
 
 export const feedService = {
   /**
-   * Get the feed for an authenticated user:
-   * - All public posts from all users
-   * - All of the user's own posts (including private)
+   * Get the global public feed:
+   * - Only public posts from all users
    * Sorted by newest first, paginated.
    */
   async getFeed(userId: string, page: number, limit: number) {
     const skip = (page - 1) * limit;
 
     const filter = {
-      $or: [{ visibility: "public" }, { author: userId }],
+      visibility: "public",
     };
 
     const [posts, totalPosts] = await Promise.all([
@@ -24,8 +24,17 @@ export const feedService = {
       Post.countDocuments(filter),
     ]);
 
+    // Enrich posts with latest 3 likers
+    const postsWithLikers = await Promise.all(
+      posts.map(async (post: any) => {
+        const latestLikers = await likeService.getLatestLikers(post._id);
+        const isLiked = userId ? await likeService.hasUserLiked(post._id, undefined, userId) : false;
+        return { ...post, latestLikers, isLiked };
+      })
+    );
+
     return {
-      posts,
+      posts: postsWithLikers,
       pagination: {
         page,
         limit,

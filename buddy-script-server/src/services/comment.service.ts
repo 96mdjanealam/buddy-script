@@ -1,6 +1,8 @@
 import { Comment } from "../models/comment.model.js";
 import { Post } from "../models/post.model.js";
 import { ApiError } from "../utils/ApiError.js";
+import { likeService } from "./like.service.js";
+import { Like } from "../models/like.model.js";
 
 export const commentService = {
   /**
@@ -40,7 +42,7 @@ export const commentService = {
     // Increment comments count on the post
     await Post.findByIdAndUpdate(postId, { $inc: { commentsCount: 1 } });
 
-    await comment.populate("author", "name email profileImage");
+    await comment.populate("author", "firstName lastName email profileImage");
 
     return comment;
   },
@@ -48,7 +50,7 @@ export const commentService = {
   /**
    * Get top-level comments for a post (where parentComment is null), paginated.
    */
-  async getComments(postId: string, page: number, limit: number) {
+  async getComments(postId: string, page: number, limit: number, userId?: string) {
     const post = await Post.findById(postId);
     if (!post) {
       throw ApiError.notFound("Post not found");
@@ -61,23 +63,25 @@ export const commentService = {
         .sort({ createdAt: 1 })
         .skip(skip)
         .limit(limit)
-        .populate("author", "name email profileImage")
+        .populate("author", "firstName lastName email profileImage")
         .lean(),
       Comment.countDocuments({ post: postId, parentComment: null }),
     ]);
 
-    // For each top-level comment, get the reply count
-    const commentsWithReplyCount = await Promise.all(
-      comments.map(async (comment) => {
-        const replyCount = await Comment.countDocuments({
-          parentComment: comment._id,
-        });
-        return { ...comment, replyCount };
+    // For each top-level comment, get the reply count, latest likers, and isLiked state
+    const commentsWithEnrichment = await Promise.all(
+      comments.map(async (comment: any) => {
+        const [replyCount, latestLikers, isLiked] = await Promise.all([
+          Comment.countDocuments({ parentComment: comment._id }),
+          likeService.getLatestLikers(undefined, comment._id),
+          userId ? likeService.hasUserLiked(undefined, comment._id, userId) : false,
+        ]);
+        return { ...comment, replyCount, latestLikers, isLiked };
       })
     );
 
     return {
-      comments: commentsWithReplyCount,
+      comments: commentsWithEnrichment,
       pagination: {
         page,
         limit,
@@ -91,7 +95,7 @@ export const commentService = {
   /**
    * Get replies to a specific comment, paginated.
    */
-  async getReplies(commentId: string, page: number, limit: number) {
+  async getReplies(commentId: string, page: number, limit: number, userId?: string) {
     const parentComment = await Comment.findById(commentId);
     if (!parentComment) {
       throw ApiError.notFound("Comment not found");
@@ -104,13 +108,24 @@ export const commentService = {
         .sort({ createdAt: 1 })
         .skip(skip)
         .limit(limit)
-        .populate("author", "name email profileImage")
+        .populate("author", "firstName lastName email profileImage")
         .lean(),
       Comment.countDocuments({ parentComment: commentId }),
     ]);
 
+    // Enrich replies with latest likers and isLiked state
+    const enrichedReplies = await Promise.all(
+      replies.map(async (reply: any) => {
+        const [latestLikers, isLiked] = await Promise.all([
+          likeService.getLatestLikers(undefined, reply._id),
+          userId ? likeService.hasUserLiked(undefined, reply._id, userId) : false,
+        ]);
+        return { ...reply, latestLikers, isLiked };
+      })
+    );
+
     return {
-      replies,
+      replies: enrichedReplies,
       pagination: {
         page,
         limit,
@@ -119,6 +134,25 @@ export const commentService = {
         hasNextPage: page * limit < totalReplies,
       },
     };
+  },
+
+  /**
+   * Internal helper to find all descendant IDs of a comment recursively.
+   */
+  async getAllDescendantIds(parentCommentId: string): Promise<string[]> {
+    const descendants: string[] = [];
+    const queue = [parentCommentId];
+
+    while (queue.length > 0) {
+      const currentId = queue.shift()!;
+      const children = await Comment.find({ parentComment: currentId }).select("_id").lean();
+      
+      const childIds = children.map(c => c._id.toString());
+      descendants.push(...childIds);
+      queue.push(...childIds);
+    }
+
+    return descendants;
   },
 
   /**
@@ -135,16 +169,15 @@ export const commentService = {
       throw ApiError.forbidden("You can only delete your own comments");
     }
 
-    // Count this comment + all nested replies for decrementing
-    const replyCount = await Comment.countDocuments({
-      parentComment: commentId,
-    });
-    const totalToDelete = 1 + replyCount;
+    // Find all descendant IDs recursively
+    const descendantIds = await this.getAllDescendantIds(commentId);
+    const allIdsToDelete = [commentId, ...descendantIds];
+    const totalToDelete = allIdsToDelete.length;
 
-    // Delete the comment and all its replies
+    // Delete all comments and their associated likes
     await Promise.all([
-      Comment.deleteMany({ parentComment: commentId }),
-      comment.deleteOne(),
+      Comment.deleteMany({ _id: { $in: allIdsToDelete } }),
+      Like.deleteMany({ comment: { $in: allIdsToDelete } }),
     ]);
 
     // Decrement comments count on the post
@@ -152,6 +185,6 @@ export const commentService = {
       $inc: { commentsCount: -totalToDelete },
     });
 
-    return { message: "Comment deleted successfully" };
+    return { message: "Comment deleted successfully", deletedCount: totalToDelete };
   },
 };

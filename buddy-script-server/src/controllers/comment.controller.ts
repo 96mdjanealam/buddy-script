@@ -32,7 +32,7 @@ export const commentController = {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 20;
 
-    const result = await commentService.getComments(postId, page, limit);
+    const result = await commentService.getComments(postId, page, limit, req.user?.userId);
 
     return ApiResponse.success(res, "Comments retrieved successfully", result);
   }),
@@ -45,7 +45,7 @@ export const commentController = {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 20;
 
-    const result = await commentService.getReplies(commentId, page, limit);
+    const result = await commentService.getReplies(commentId, page, limit, req.user?.userId);
 
     return ApiResponse.success(res, "Replies retrieved successfully", result);
   }),

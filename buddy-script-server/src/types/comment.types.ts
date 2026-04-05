@@ -5,6 +5,7 @@ export interface IComment {
   author: Types.ObjectId;
   text: string;
   parentComment: Types.ObjectId | null;
+  likesCount: number;
   createdAt: Date;
   updatedAt: Date;
 }

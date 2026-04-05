@@ -82,7 +82,7 @@ const RegistrationForm = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {error && (
-          <div className="p-3 rounded-lg bg-red-50 text-red-500 text-sm font-medium">
+          <div className="p-4 rounded-md bg-red-50 text-red-500 text-sm font-medium">
             {error}
           </div>
         )}
@@ -141,7 +141,7 @@ const RegistrationForm = () => {
 
         <Button
           type="submit"
-          className="w-full rounded-lg py-4 text-lg mt-4 shadow-lg shadow-[#0081ff]/20"
+          className="w-full py-4 text-lg mt-4 shadow-sm"
           isLoading={isSubmitting}
         >
           Register now

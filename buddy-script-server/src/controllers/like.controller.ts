@@ -12,9 +12,22 @@ export const likeController = {
     if (!req.user) throw ApiError.unauthorized();
 
     const postId = req.params.postId as string;
-    const result = await likeService.toggleLike(postId, req.user.userId);
+    const result = await likeService.toggleLike(postId, undefined, req.user.userId);
 
     const message = result.liked ? "Post liked" : "Post unliked";
+    return ApiResponse.success(res, message, result);
+  }),
+
+  /**
+   * POST /api/comments/:commentId/like
+   */
+  toggleCommentLike: asyncHandler(async (req: Request, res: Response) => {
+    if (!req.user) throw ApiError.unauthorized();
+
+    const commentId = req.params.commentId as string;
+    const result = await likeService.toggleLike(undefined, commentId, req.user.userId);
+
+    const message = result.liked ? "Comment liked" : "Comment unliked";
     return ApiResponse.success(res, message, result);
   }),
 };

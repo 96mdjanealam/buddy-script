@@ -1,8 +1,26 @@
 export interface User {
-  id: string;
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
+  profileImage?: {
+    url: string;
+    publicId: string;
+  };
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface UpdateProfileData {
+  firstName?: string;
+  lastName?: string;
+  image?: File;
+}
+
+export interface ChangePasswordData {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
 }
 
 export interface RegisterData {
@@ -17,6 +35,69 @@ export interface LoginData {
   password?: string;
 }
 
+export interface Post {
+  _id: string;
+  author: User;
+  text?: string;
+  image?: {
+    url: string;
+    publicId: string;
+  };
+  visibility: "public" | "private";
+  likesCount: number;
+  commentsCount: number;
+  latestLikers?: User[];
+  isLiked?: boolean; // Added for frontend state
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Comment {
+  _id: string;
+  post: string;
+  author: User;
+  text: string;
+  parentComment: string | null;
+  likesCount: number;
+  latestLikers?: User[];
+  isLiked?: boolean;
+  replyCount?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Like {
+  _id: string;
+  post: string;
+  user: string;
+  createdAt: string;
+}
+
+export interface PaginationInfo {
+  page: number;
+  limit: number;
+  totalPosts?: number;
+  totalComments?: number;
+  totalReplies?: number;
+  totalPages: number;
+  hasNextPage: boolean;
+}
+
+export interface FeedResponse {
+  posts: Post[];
+  pagination: PaginationInfo;
+}
+
+export interface CommentsResponse {
+  comments: Comment[];
+  pagination: PaginationInfo;
+}
+
+export interface RepliesResponse {
+  replies: Comment[];
+  pagination: PaginationInfo;
+}
+
 export interface ApiResponse<T = any> {
   success: boolean;
   message: string;
@@ -26,4 +107,9 @@ export interface ApiResponse<T = any> {
 export interface LoginResponse {
   user: User;
   token: string;
+}
+
+export interface PaginationParams {
+  page?: number;
+  limit?: number;
 }

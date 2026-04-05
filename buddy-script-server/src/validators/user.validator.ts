@@ -1,11 +1,17 @@
 import { z } from "zod";
 
 export const updateProfileSchema = z.object({
-  name: z
+  firstName: z
     .string()
     .trim()
-    .min(1, "Name cannot be empty")
-    .max(100, "Name cannot exceed 100 characters")
+    .min(1, "First name cannot be empty")
+    .max(50, "First name cannot exceed 50 characters")
+    .optional(),
+  lastName: z
+    .string()
+    .trim()
+    .min(1, "Last name cannot be empty")
+    .max(50, "Last name cannot exceed 50 characters")
     .optional(),
 });
 

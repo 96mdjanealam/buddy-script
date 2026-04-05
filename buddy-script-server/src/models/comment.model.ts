@@ -25,6 +25,10 @@ const commentSchema = new Schema<ICommentDocument>(
       ref: "Comment",
       default: null,
     },
+    likesCount: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

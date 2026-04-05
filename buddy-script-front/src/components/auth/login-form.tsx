@@ -61,7 +61,7 @@ const LoginForm = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {error && (
-          <div className="p-4 rounded-lg bg-red-50 text-red-600 text-sm font-medium border border-red-100">
+          <div className="p-4 rounded-md bg-red-50 text-red-600 text-sm font-medium border border-red-100">
             {error}
           </div>
         )}
@@ -96,7 +96,7 @@ const LoginForm = () => {
 
         <Button
           type="submit"
-          className="w-full rounded-lg py-4 text-lg mt-4 shadow-lg shadow-[#0081ff]/20"
+          className="w-full py-4 text-lg mt-4 shadow-sm"
           isLoading={isSubmitting}
         >
           Login

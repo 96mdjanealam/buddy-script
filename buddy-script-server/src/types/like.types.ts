@@ -1,7 +1,8 @@
 import type { Document, Types } from "mongoose";
 
 export interface ILike {
-  post: Types.ObjectId;
+  post?: Types.ObjectId;
+  comment?: Types.ObjectId;
   user: Types.ObjectId;
   createdAt: Date;
 }

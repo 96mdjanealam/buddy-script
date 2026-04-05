@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import { Post } from "../models/post.model.js";
 import { ApiError } from "../utils/ApiError.js";
+import { likeService } from "./like.service.js";
 import {
   uploadImageToCloudinary,
   deleteImageFromCloudinary,
@@ -117,9 +118,18 @@ export const userService = {
       Post.countDocuments(postFilter),
     ]);
 
+    // Enrich posts with latest 3 likers
+    const postsWithLikers = await Promise.all(
+      posts.map(async (post: any) => {
+        const latestLikers = await likeService.getLatestLikers(post._id);
+        const isLiked = loggedInUserId ? await likeService.hasUserLiked(post._id, loggedInUserId) : false;
+        return { ...post, latestLikers, isLiked };
+      })
+    );
+
     return {
       user,
-      posts,
+      posts: postsWithLikers,
       pagination: {
         page,
         limit,
