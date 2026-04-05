@@ -15,7 +15,7 @@ const generateToken = (user: IUserDocument): string => {
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: env.NODE_ENV === "production",
-  sameSite: "strict" as const,
+  sameSite: env.NODE_ENV === "production" ? "none" : "lax",
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
 
@@ -23,7 +23,12 @@ export const authService = {
   /**
    * Register a new user and return user data.
    */
-  async register(firstName: string, lastName: string, email: string, password: string) {
+  async register(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+  ) {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw ApiError.conflict("User with this email already exists");
@@ -79,7 +84,7 @@ export const authService = {
     return {
       httpOnly: true,
       secure: env.NODE_ENV === "production",
-      sameSite: "strict" as const,
+      sameSite: env.NODE_ENV === "production" ? "none" : "lax",
     };
   },
 };
