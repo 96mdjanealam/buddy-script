@@ -1,5 +1,5 @@
 import apiClient from "@/lib/api-client";
-import { User, ApiResponse, UpdateProfileData, ChangePasswordData } from "@/types/api";
+import { User, ApiResponse, UpdateProfileData, ChangePasswordData, PaginationParams, PublicProfileResponse } from "@/types/api";
 
 export const userService = {
   /**
@@ -25,6 +25,17 @@ export const userService = {
    */
   async changePassword(data: ChangePasswordData): Promise<ApiResponse> {
     const response = await apiClient.patch("/users/me/password", data);
+    return response.data;
+  },
+
+  /**
+   * Get public profile and paginated posts.
+   */
+  async getPublicProfile(
+    userId: string,
+    params?: PaginationParams
+  ): Promise<ApiResponse<PublicProfileResponse>> {
+    const response = await apiClient.get(`/users/${userId}`, { params });
     return response.data;
   },
 };

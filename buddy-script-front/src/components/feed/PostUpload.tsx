@@ -10,14 +10,9 @@ import { postService } from "@/services/post.service";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
-const postSchema = z
-  .object({
-    text: z.string().max(5000, "Post cannot exceed 5000 characters").optional(),
-  })
-  .refine((data) => data.text?.trim() !== "", {
-    message: "Post must have at least text or an image",
-    path: ["text"],
-  });
+const postSchema = z.object({
+  text: z.string().max(5000, "Post cannot exceed 5000 characters").optional(),
+});
 
 type PostFormValues = z.infer<typeof postSchema>;
 
@@ -36,10 +31,13 @@ const PostUpload: React.FC<PostUploadProps> = ({ onPostCreated }) => {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { isSubmitting, errors },
   } = useForm<PostFormValues>({
     resolver: zodResolver(postSchema),
   });
+
+  const postText = watch("text");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -107,22 +105,28 @@ const PostUpload: React.FC<PostUploadProps> = ({ onPostCreated }) => {
           </div>
 
           <div className="flex-1 pt-1 min-w-0">
-            <div className="relative flex items-start gap-2 text-gray-500 group focus-within:text-gray-800">
+            <div className="relative group">
+              {/* Custom Placeholder with Inline Pencil */}
+              {!postText && (
+                <div className="absolute top-0 left-0 right-0 pointer-events-none flex items-start px-0 py-1 text-[15px] text-gray-500 transition-colors group-focus-within:text-gray-400">
+                  <span className="truncate">Write something {user?.firstName} ...</span>
+                  <Pencil
+                    size={16}
+                    strokeWidth={1.5}
+                    className="ml-1.5 mt-[3px] shrink-0"
+                  />
+                </div>
+              )}
+
               <textarea
                 {...register("text")}
-                placeholder="Write something ..."
-                className="w-full min-h-[40px] px-0 py-1 bg-transparent resize-none outline-none text-[15px] font-medium text-gray-800 placeholder:text-gray-500 placeholder:font-normal placeholder:transition-colors transition-colors focus:placeholder:text-gray-400"
+                className="w-full min-h-[40px] px-0 py-1 bg-transparent resize-none outline-none text-[15px] font-medium text-gray-800 relative z-10"
                 rows={1}
                 onInput={(e) => {
                   e.currentTarget.style.height = "auto";
                   e.currentTarget.style.height =
                     e.currentTarget.scrollHeight + "px";
                 }}
-              />
-              <Pencil
-                size={18}
-                strokeWidth={1.5}
-                className="mt-1 flex-shrink-0 text-gray-400"
               />
             </div>
 

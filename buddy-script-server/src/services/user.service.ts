@@ -122,7 +122,7 @@ export const userService = {
     const postsWithLikers = await Promise.all(
       posts.map(async (post: any) => {
         const latestLikers = await likeService.getLatestLikers(post._id);
-        const isLiked = loggedInUserId ? await likeService.hasUserLiked(post._id, loggedInUserId) : false;
+        const isLiked = loggedInUserId ? await likeService.hasUserLiked(post._id, undefined, loggedInUserId) : false;
         return { ...post, latestLikers, isLiked };
       })
     );

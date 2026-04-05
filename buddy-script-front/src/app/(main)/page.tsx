@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import PostUpload from "@/components/feed/PostUpload";
 import PostList from "@/components/feed/PostList";
 import SidebarSkeleton from "@/components/feed/SidebarSkeleton";
+import LeftSidebar from "@/components/feed/LeftSidebar";
 
 export default function Home() {
   const [feedKey, setFeedKey] = useState(0);
@@ -18,7 +19,7 @@ export default function Home() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Left Sidebar - 25% */}
           <aside className="hidden lg:block lg:w-[25%] sticky top-24 self-start">
-            <SidebarSkeleton />
+            <LeftSidebar />
           </aside>
 
           {/* Main Feed - Center */}

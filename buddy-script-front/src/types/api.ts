@@ -113,3 +113,9 @@ export interface PaginationParams {
   page?: number;
   limit?: number;
 }
+
+export interface PublicProfileResponse {
+  user: User;
+  posts: Post[];
+  pagination: PaginationInfo;
+}

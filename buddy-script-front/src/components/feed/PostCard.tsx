@@ -12,9 +12,10 @@ import CommentSection from "./CommentSection";
 interface PostCardProps {
   post: Post;
   onPostDeleted?: (postId: string) => void;
+  hideOnMakePrivate?: boolean;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ post, onPostDeleted }) => {
+const PostCard: React.FC<PostCardProps> = ({ post, onPostDeleted, hideOnMakePrivate = true }) => {
   const { user } = useAuth();
   const [isLiked, setIsLiked] = useState(post.isLiked || false);
   const [likesCount, setLikesCount] = useState(post.likesCount);
@@ -62,8 +63,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, onPostDeleted }) => {
       if (response.success) {
         setPostVisibility(newVisibility);
         
-        // Optimistically remove the post from the public feed view
-        if (newVisibility === "private" && onPostDeleted) {
+        // Optimistically remove the post from the public feed view, if configured
+        if (hideOnMakePrivate && newVisibility === "private" && onPostDeleted) {
           setTimeout(() => onPostDeleted(post._id), 300); // Small delay for smooth animation out
         }
       }

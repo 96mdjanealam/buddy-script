@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Home } from "lucide-react";
+import { Home, UserCircle } from "lucide-react";
 import UserNav from "@/components/UserNav";
 import { usePathname } from "next/navigation";
 
@@ -42,6 +42,18 @@ const Navbar = () => {
             }`}
           >
             <Home size={22} />
+          </Link>
+
+          <Link
+            href="/my-posts"
+            aria-label="My Posts"
+            className={`flex items-center justify-center h-16 px-3 transition-all duration-200 ${
+              isActive("/my-posts")
+                ? "text-[#0081ff] border-b-2 border-[#0081ff]"
+                : "text-gray-500 hover:bg-gray-50 hover:text-[#0081ff]"
+            }`}
+          >
+            <UserCircle size={22} />
           </Link>
 
           <div className="h-6 w-px bg-gray-100 mx-1 hidden sm:block"></div>
