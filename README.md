@@ -151,18 +151,21 @@ _(The app should run on http://localhost:3000)_
 
 ## 📡 API Endpoints Overview
 
-| Route Path                | Method | Description                                    | Auth Required |
-| ------------------------- | ------ | ---------------------------------------------- | ------------- |
-| `/api/auth/register`      | `POST` | Create a new user account                      | No            |
-| `/api/auth/login`         | `POST` | Authenticate and retrieve token set via cookie | No            |
-| `/api/auth/logout`        | `POST` | Clears the auth cookie session                 | Yes           |
-| `/api/users/me`           | `GET`  | Get current logged-in user details             | Yes           |
-| `/api/users/folks`        | `GET`  | Get paginated list of users ("New Folks")      | Yes           |
-| `/api/posts/`             | `GET`  | Fetch all feed posts (paginated)               | Yes           |
-| `/api/posts/`             | `POST` | Create a new post                              | Yes           |
-| `/api/posts/:postId/like` | `POST` | Toggle a post like                             | Yes           |
-| `/api/comments/:postId`   | `GET`  | Fetch comments for a single post               | Yes           |
-| `/api/comments/:postId`   | `POST` | Post a comment or reply to an existing one     | Yes           |
+| Route Path | Method | Description | Auth Required |
+| --- | --- | --- | --- |
+| `/api/auth/register` | `POST` | Create a new user account | No |
+| `/api/auth/login` | `POST` | Authenticate and retrieve token set via cookie | No |
+| `/api/auth/logout` | `POST` | Clears the auth cookie session | Yes |
+| `/api/users/me` | `GET` / `PATCH` | Get or update current logged-in user details | Yes |
+| `/api/users/latest` | `GET` | Get paginated list of users ("Newbies") | Yes |
+| `/api/users/:userId`| `GET` | Get a user's public profile | Yes |
+| `/api/feed/` | `GET` | Fetch all feed posts (paginated) | Yes |
+| `/api/posts/` | `POST` | Create a new post | Yes |
+| `/api/posts/:postId/like` | `POST` | Toggle a post like | Yes |
+| `/api/posts/:postId/comments` | `GET` | Fetch comments for a single post | Yes |
+| `/api/posts/:postId/comments` | `POST` | Post a new comment on a post | Yes |
+| `/api/comments/:commentId/replies` | `GET` | Fetch replies for a specific comment | Yes |
+| `/api/comments/:commentId/like` | `POST` | Toggle a comment like | Yes |
 
 _(All API responses follow a standardized `ApiResponse` structure containing `success`, `statusCode`, `message`, and `data` fields.)_
 
