@@ -156,9 +156,6 @@ const CommentItem: React.FC<CommentItemProps> = ({
   };
 
   const handleDeleteThisComment = async () => {
-    if (!window.confirm("Are you sure you want to delete this comment?"))
-      return;
-
     setIsDeleting(true);
     try {
       const response = await postService.deleteComment(comment._id);
