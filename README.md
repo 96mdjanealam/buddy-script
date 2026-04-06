@@ -1,5 +1,7 @@
 # BuddyScript
 
+**Live Demo:** [https://buddy-script-front.vercel.app](https://buddy-script-front.vercel.app)
+
 BuddyScript is a modern, full-stack social media application where users can share their thoughts, upload images, comment on posts, and interact with the community. It features a complete authentication system with a responsive and accessible user interface.
 
 ## 🚀 Tech Stack
@@ -151,21 +153,21 @@ _(The app should run on http://localhost:3000)_
 
 ## 📡 API Endpoints Overview
 
-| Route Path | Method | Description | Auth Required |
-| --- | --- | --- | --- |
-| `/api/auth/register` | `POST` | Create a new user account | No |
-| `/api/auth/login` | `POST` | Authenticate and retrieve token set via cookie | No |
-| `/api/auth/logout` | `POST` | Clears the auth cookie session | Yes |
-| `/api/users/me` | `GET` / `PATCH` | Get or update current logged-in user details | Yes |
-| `/api/users/latest` | `GET` | Get paginated list of users ("Newbies") | Yes |
-| `/api/users/:userId`| `GET` | Get a user's public profile | Yes |
-| `/api/feed/` | `GET` | Fetch all feed posts (paginated) | Yes |
-| `/api/posts/` | `POST` | Create a new post | Yes |
-| `/api/posts/:postId/like` | `POST` | Toggle a post like | Yes |
-| `/api/posts/:postId/comments` | `GET` | Fetch comments for a single post | Yes |
-| `/api/posts/:postId/comments` | `POST` | Post a new comment on a post | Yes |
-| `/api/comments/:commentId/replies` | `GET` | Fetch replies for a specific comment | Yes |
-| `/api/comments/:commentId/like` | `POST` | Toggle a comment like | Yes |
+| Route Path                         | Method          | Description                                    | Auth Required |
+| ---------------------------------- | --------------- | ---------------------------------------------- | ------------- |
+| `/api/auth/register`               | `POST`          | Create a new user account                      | No            |
+| `/api/auth/login`                  | `POST`          | Authenticate and retrieve token set via cookie | No            |
+| `/api/auth/logout`                 | `POST`          | Clears the auth cookie session                 | Yes           |
+| `/api/users/me`                    | `GET` / `PATCH` | Get or update current logged-in user details   | Yes           |
+| `/api/users/latest`                | `GET`           | Get paginated list of users ("Newbies")        | Yes           |
+| `/api/users/:userId`               | `GET`           | Get a user's public profile                    | Yes           |
+| `/api/feed/`                       | `GET`           | Fetch all feed posts (paginated)               | Yes           |
+| `/api/posts/`                      | `POST`          | Create a new post                              | Yes           |
+| `/api/posts/:postId/like`          | `POST`          | Toggle a post like                             | Yes           |
+| `/api/posts/:postId/comments`      | `GET`           | Fetch comments for a single post               | Yes           |
+| `/api/posts/:postId/comments`      | `POST`          | Post a new comment on a post                   | Yes           |
+| `/api/comments/:commentId/replies` | `GET`           | Fetch replies for a specific comment           | Yes           |
+| `/api/comments/:commentId/like`    | `POST`          | Toggle a comment like                          | Yes           |
 
 _(All API responses follow a standardized `ApiResponse` structure containing `success`, `statusCode`, `message`, and `data` fields.)_
 
