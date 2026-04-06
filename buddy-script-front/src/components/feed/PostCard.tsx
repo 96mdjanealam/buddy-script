@@ -185,7 +185,6 @@ const PostCard: React.FC<PostCardProps> = ({
     }
   };
 
-  const userInitial = post.author.firstName.charAt(0);
   const isAuthor = user?._id === post.author._id;
 
   return (
@@ -382,5 +381,3 @@ const PostCard: React.FC<PostCardProps> = ({
 };
 
 export default PostCard;
-
-

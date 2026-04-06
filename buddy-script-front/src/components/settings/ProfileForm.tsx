@@ -48,6 +48,13 @@ const ProfileForm = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        setError("Image size must be less than 2MB");
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        return;
+      }
       setSelectedImage(file);
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
