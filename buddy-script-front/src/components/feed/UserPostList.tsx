@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Post, User } from "@/types/api";
+import { Post, User } from "@/types/types";
 import { userService } from "@/services/user.service";
 import PostCard from "./PostCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -130,3 +130,5 @@ const UserPostList: React.FC<UserPostListProps> = ({ userId, isOwnProfile = fals
 };
 
 export default UserPostList;
+
+

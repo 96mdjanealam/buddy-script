@@ -1,6 +1,6 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { NewFolksPagination } from "@/types/api";
+import { NewFolksPagination } from "@/types/types";
 
 interface NewFolksPaginationProps {
   pagination: NewFolksPagination;
@@ -42,3 +42,5 @@ const NewFolksPaginationBar = ({ pagination, onPageChange }: NewFolksPaginationP
 };
 
 export default NewFolksPaginationBar;
+
+

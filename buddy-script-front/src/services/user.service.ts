@@ -1,5 +1,5 @@
 import apiClient from "@/lib/api-client";
-import { User, ApiResponse, UpdateProfileData, ChangePasswordData, PaginationParams, PublicProfileResponse, NewFolksResponse } from "@/types/api";
+import { User, ApiResponse, UpdateProfileData, ChangePasswordData, PaginationParams, PublicProfileResponse, NewFolksResponse } from "@/types/types";
 
 export interface NewFolksParams {
   page?: number;
@@ -53,3 +53,5 @@ export const userService = {
     return response.data;
   },
 };
+
+

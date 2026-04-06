@@ -12,7 +12,7 @@ import {
   MessageCircleMore,
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
-import { Post } from "@/types/api";
+import { Post } from "@/types/types";
 import { postService } from "@/services/post.service";
 import Image from "next/image";
 import CommentSection from "./CommentSection";
@@ -382,3 +382,5 @@ const PostCard: React.FC<PostCardProps> = ({
 };
 
 export default PostCard;
+
+

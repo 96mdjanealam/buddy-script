@@ -8,7 +8,7 @@ import {
   CommentsResponse,
   RepliesResponse,
   PaginationParams,
-} from "@/types/api";
+} from "@/types/types";
 
 export const postService = {
   async getFeed(params: PaginationParams = {}): Promise<ApiResponse<FeedResponse>> {
@@ -78,3 +78,5 @@ export const postService = {
     return response.data;
   },
 };
+
+

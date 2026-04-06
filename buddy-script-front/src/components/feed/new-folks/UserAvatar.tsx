@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { NewFolksUser } from "@/types/api";
+import { NewFolksUser } from "@/types/types";
 
 interface UserAvatarProps {
   user: Pick<NewFolksUser, "firstName" | "lastName" | "profileImage">;
@@ -37,3 +37,5 @@ const UserAvatar = ({ user, size = 36 }: UserAvatarProps) => {
 };
 
 export default UserAvatar;
+
+

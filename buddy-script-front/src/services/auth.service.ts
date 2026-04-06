@@ -1,5 +1,5 @@
 import apiClient from "@/lib/api-client";
-import { RegisterData, LoginData, ApiResponse, LoginResponse, User } from "@/types/api";
+import { RegisterData, LoginData, ApiResponse, LoginResponse, User } from "@/types/types";
 
 export const authService = {
   async register(data: RegisterData): Promise<ApiResponse> {
@@ -22,3 +22,5 @@ export const authService = {
     return response.data;
   },
 };
+
+

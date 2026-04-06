@@ -12,7 +12,7 @@ import {
   Send,
   Heart,
 } from "lucide-react";
-import { Comment, RepliesResponse } from "@/types/api";
+import { Comment, RepliesResponse } from "@/types/types";
 import { postService } from "@/services/post.service";
 import { useAuth } from "@/context/auth-context";
 import Image from "next/image";
@@ -417,3 +417,5 @@ const CommentItem: React.FC<CommentItemProps> = ({
 };
 
 export default CommentItem;
+
+

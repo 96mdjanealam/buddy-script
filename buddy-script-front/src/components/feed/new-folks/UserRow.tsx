@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { NewFolksUser } from "@/types/api";
+import { NewFolksUser } from "@/types/types";
 import UserAvatar from "./UserAvatar";
 
 interface UserRowProps {
@@ -39,3 +39,5 @@ const UserRow = ({ user }: UserRowProps) => {
 };
 
 export default UserRow;
+
+

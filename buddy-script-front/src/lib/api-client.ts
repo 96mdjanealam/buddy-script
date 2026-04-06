@@ -9,14 +9,12 @@ const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, // For cookies if needed
+  withCredentials: true,
 });
 
-// Response interceptor for better error handling
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Standardize error responses
     const message =
       error.response?.data?.message || "An unexpected error occurred";
     return Promise.reject({ ...error, message });
@@ -24,3 +22,5 @@ apiClient.interceptors.response.use(
 );
 
 export default apiClient;
+
+

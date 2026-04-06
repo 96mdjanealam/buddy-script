@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode, useCallback } from "react";
-import { User, LoginData } from "@/types/api";
+import { User, LoginData } from "@/types/types";
 import { authService } from "@/services/auth.service";
 
 interface AuthContextType {
@@ -26,6 +26,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const response = await authService.login(data);
       if (response.success) {
         setUser(response.data.user);
+        // Set the token as a same-origin cookie so proxy.ts can read it in production.
+        // The backend sets it cross-domain which browsers may block; this ensures it lands.
+        if (response.data.token) {
+          const maxAge = 7 * 24 * 60 * 60; // 7 days in seconds
+          document.cookie = `accessToken=${response.data.token}; path=/; max-age=${maxAge}; SameSite=Lax`;
+        }
       }
     } catch (error) {
       setUser(null);
@@ -41,6 +47,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await authService.logout();
     } finally {
       setUser(null);
+      // Clear the client-side cookie we set on login
+      document.cookie = "accessToken=; path=/; max-age=0; SameSite=Lax";
       setIsLoading(false);
     }
   }, []);
@@ -60,9 +68,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsLoading(false);
     }
   }, []);
-
-  // Note: checkAuth is typically called in a useEffect in the Provider component itself
-  // but to keep logic clean, we'll implement that in auth-provider.tsx
 
   return (
     <AuthContext.Provider
@@ -88,3 +93,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
+

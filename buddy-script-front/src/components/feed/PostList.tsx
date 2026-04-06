@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Post, FeedResponse } from "@/types/api";
+import { Post, FeedResponse } from "@/types/types";
 import { postService } from "@/services/post.service";
 import PostCard from "./PostCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -120,3 +120,5 @@ const PostList = () => {
 };
 
 export default PostList;
+
+

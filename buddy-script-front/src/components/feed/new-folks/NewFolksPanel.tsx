@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Search, Users } from "lucide-react";
 import { userService } from "@/services/user.service";
-import { NewFolksUser, NewFolksPagination } from "@/types/api";
+import { NewFolksUser, NewFolksPagination } from "@/types/types";
 import UserRow from "./UserRow";
 import NewFolksPaginationBar from "./NewFolksPaginationBar";
 
@@ -122,3 +122,5 @@ const NewFolksPanel = () => {
 };
 
 export default NewFolksPanel;
+
+

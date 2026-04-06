@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { userService } from "@/services/user.service";
-import { User } from "@/types/api";
+import { User } from "@/types/types";
 import UserPostList from "@/components/feed/UserPostList";
 import Image from "next/image";
 import { Calendar, Globe, Lock, ArrowLeft } from "lucide-react";
@@ -155,3 +155,4 @@ export default function ProfilePage() {
     </main>
   );
 }
+

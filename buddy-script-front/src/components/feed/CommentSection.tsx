@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { MessageSquare, Send } from "lucide-react";
-import { Comment, CommentsResponse } from "@/types/api";
+import { Comment, CommentsResponse } from "@/types/types";
 import { postService } from "@/services/post.service";
 import { useAuth } from "@/context/auth-context";
 import CommentItem from "./CommentItem";
@@ -168,3 +168,5 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 };
 
 export default CommentSection;
+
+

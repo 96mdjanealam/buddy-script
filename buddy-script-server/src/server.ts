@@ -10,17 +10,14 @@ import app from "./app.js";
 
 const startServer = async (): Promise<void> => {
   try {
-    // Connect to MongoDB
     await connectDB();
 
-    // Start the Express server
     const server = app.listen(env.PORT, () => {
       console.log(
         `🚀 Server is running on port ${env.PORT} in ${env.NODE_ENV} mode`,
       );
     });
 
-    // Graceful shutdown
     const gracefulShutdown = (signal: string) => {
       console.log(`\n${signal} received. Shutting down gracefully...`);
       server.close(() => {
@@ -28,7 +25,6 @@ const startServer = async (): Promise<void> => {
         process.exit(0);
       });
 
-      // Force shutdown after 10 seconds
       setTimeout(() => {
         console.error("⚠️ Forced shutdown after timeout");
         process.exit(1);
